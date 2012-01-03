@@ -37,7 +37,8 @@ Matthew Snover (snover@cs.umd.edu)
 
 */
 
-package ter;
+package ter.core;
+
 
 /* 
 
@@ -59,7 +60,7 @@ those functions.
 
 */
 
-public class TERcost {
+public class CostFunction {
   /* For all of these functions, the score should be between 0 and 1
    * (inclusive).  If it isn't, then it will break TERcalc! */
 
@@ -84,7 +85,7 @@ public class TERcost {
   }
 
   /* The cost of making a shift */
-  public double shift_cost(TERshift shift) {
+  public double shift_cost(Shift shift) {
       return _shift_cost;
   }
 

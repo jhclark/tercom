@@ -1,4 +1,4 @@
-package ter;
+package ter.util;
 
 public class Pair<T1, T2> {
 	public final T1 first;

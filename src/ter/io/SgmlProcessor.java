@@ -1,4 +1,4 @@
-package ter;
+package ter.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +27,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class TERsgml {
+import ter.core.Alignment;
+import ter.core.Shift;
+
+public class SgmlProcessor {
   public static enum TAGNAME {
 	TSTSET, REFSET, DOC, AUDIOFILE, SEG, HYP, WORD, HL, P, UNKNOWN;
   }
@@ -52,7 +55,7 @@ public class TERsgml {
 			return val;
   }
     
-  public TERsgml() {
+  public SgmlProcessor() {
 	factory = null;
 	builder = null;
 	
@@ -310,7 +313,7 @@ public class TERsgml {
    *       segments.
    ********************************************************/
   public void writeXMLAlignment(BufferedWriter xml,
-                                       TERalignment result,
+                                       Alignment result,
                                        String id,
                                        boolean istrans) {
 	HashMap<ATTRNAME, String> cur_ids = parseID(id, istrans);
@@ -541,7 +544,7 @@ public class TERsgml {
                                                String[] ref,
                                                String[] hyp,
                                                char[] alignment,
-                                               TERshift[] allshifts) {
+                                               Shift[] allshifts) {
 	HashMap<String, List<Integer>> align_info = new HashMap<String, List<Integer>>();
 	ArrayList<Integer> shift_dists = new ArrayList<Integer>();
 	int anum = 1;
@@ -766,7 +769,7 @@ public class TERsgml {
    *       3 - both start and end tags are found <tag/> is found.
    ********************************************************/
   private int getNTag(String line,
-                      TERtag tag) {
+                      Tag tag) {
 
 	Matcher start_tag_m = start_tag_i.matcher(line);
 	Matcher end_tag_m = end_tag_i.matcher(line);
@@ -807,7 +810,7 @@ public class TERsgml {
    * Desc: Builds the document elements from a given line is possible.
    ********************************************************/
   private void buildDomLine(String line) {
-	TERtag tag = new TERtag();
+	Tag tag = new Tag();
 
 	if(line.trim().equals("")) return;
 	else if(document == null) return;

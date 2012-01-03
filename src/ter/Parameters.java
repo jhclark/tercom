@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TERpara {
+public class Parameters {
   private String reffn;
   private String hypfn;
   private String reflenfn;
@@ -30,7 +30,7 @@ public class TERpara {
       NORMALIZE, CASEON, NOPUNCTUATION, REF, HYP, FORMATS, OUTPFX, BEAMWIDTH, REFLEN, TRANSSPAN, SHIFTDIST, DELETE_COST, INSERT_COST, SUBSTITUTE_COST, MATCH_COST, SHIFT_COST;
   }
 
-  public TERpara() {
+  public Parameters() {
 	reffn = "";
 	hypfn = "";
     reflenfn = "";

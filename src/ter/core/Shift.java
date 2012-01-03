@@ -37,19 +37,19 @@ Matthew Snover (snover@cs.umd.edu)
 
 */
 
-package ter;
+package ter.core;
 
 import java.util.List;
 
 /* This is just a useful class for containing shift information */
-public class TERshift {
-  TERshift () {
+public class Shift {
+  Shift () {
 	start = 0;
 	end = 0;
 	moveto = 0;
 	newloc = 0;
   }
-  TERshift (int _start, int _end, int _moveto, int _newloc) {
+  Shift (int _start, int _end, int _moveto, int _newloc) {
 	start = _start;
 	end = _end;
 	moveto = _moveto;

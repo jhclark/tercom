@@ -52,48 +52,52 @@ import java.util.List;
 import java.util.Iterator;
 import org.w3c.dom.Document;
 
-import ter.TERpara.OPTIONS;
+import ter.Parameters.OPTIONS;
+import ter.core.Alignment;
+import ter.core.CostFunction;
+import ter.core.TerScorer;
+import ter.io.SgmlProcessor;
 
-public class TERtest {
+public class TER {
     public static void main(String[] args) {
 	// 1. process arguments
-    TERpara para = new TERpara();
+    Parameters para = new Parameters();
     // paras include Boolean, Double, and Integer
 	Map<OPTIONS, Object> paras = para.getOpts(args);
-	String ref_fn = (String) paras.get(TERpara.OPTIONS.REF);
-	String hyp_fn = (String) paras.get(TERpara.OPTIONS.HYP);
-	Object val = paras.get(TERpara.OPTIONS.NORMALIZE);
+	String ref_fn = (String) paras.get(Parameters.OPTIONS.REF);
+	String hyp_fn = (String) paras.get(Parameters.OPTIONS.HYP);
+	Object val = paras.get(Parameters.OPTIONS.NORMALIZE);
 	boolean normalized = (Boolean) val;
-	val = paras.get(TERpara.OPTIONS.CASEON);
+	val = paras.get(Parameters.OPTIONS.CASEON);
 	boolean caseon = (Boolean) val;
-	val = paras.get(TERpara.OPTIONS.NOPUNCTUATION);
+	val = paras.get(Parameters.OPTIONS.NOPUNCTUATION);
 	boolean nopunct = (Boolean) val;
-	val = paras.get(TERpara.OPTIONS.OUTPFX);
+	val = paras.get(Parameters.OPTIONS.OUTPFX);
 	String out_pfx;
 	if(val != null)
 	    out_pfx = (String) val;
 	else
 	    out_pfx = "";
-	val = paras.get(TERpara.OPTIONS.FORMATS);
+	val = paras.get(Parameters.OPTIONS.FORMATS);
 
 	List<String> formats = new ArrayList<String>();
 	if(val != null)
 	    formats = (List<String>) val;
-	val = paras.get(TERpara.OPTIONS.BEAMWIDTH);
+	val = paras.get(Parameters.OPTIONS.BEAMWIDTH);
 	int beam_width = (Integer) val;
-	val = paras.get(TERpara.OPTIONS.REFLEN);
+	val = paras.get(Parameters.OPTIONS.REFLEN);
 	String reflen_fn = (String) val;
-	val = paras.get(TERpara.OPTIONS.TRANSSPAN);
+	val = paras.get(Parameters.OPTIONS.TRANSSPAN);
 	String span_pfx = (String) val;
-	val = paras.get(TERpara.OPTIONS.SHIFTDIST);
+	val = paras.get(Parameters.OPTIONS.SHIFTDIST);
 	int shift_dist = (Integer) val;
 
-	TERcost costfunc = new TERcost();
-	costfunc._delete_cost = (Double) paras.get(TERpara.OPTIONS.DELETE_COST);
-	costfunc._insert_cost = (Double) paras.get(TERpara.OPTIONS.INSERT_COST);
-	costfunc._shift_cost = (Double) paras.get(TERpara.OPTIONS.SHIFT_COST);
-	costfunc._match_cost = (Double) paras.get(TERpara.OPTIONS.MATCH_COST);
-	costfunc._substitute_cost = (Double) paras.get(TERpara.OPTIONS.SUBSTITUTE_COST);
+	CostFunction costfunc = new CostFunction();
+	costfunc._delete_cost = (Double) paras.get(Parameters.OPTIONS.DELETE_COST);
+	costfunc._insert_cost = (Double) paras.get(Parameters.OPTIONS.INSERT_COST);
+	costfunc._shift_cost = (Double) paras.get(Parameters.OPTIONS.SHIFT_COST);
+	costfunc._match_cost = (Double) paras.get(Parameters.OPTIONS.MATCH_COST);
+	costfunc._substitute_cost = (Double) paras.get(Parameters.OPTIONS.SUBSTITUTE_COST);
 
 	// 2. init variables
 	int in_ref_format;
@@ -112,9 +116,9 @@ public class TERtest {
 	Map<String, List<String>> reflenids = null;
 	Map<String, String> refspans = null;
 	Map<String, String> hypspans = null;
-	TERsgml hypsgm = new TERsgml();
-	TERsgml refsgm = new TERsgml();
-	TERsgml reflensgm = null;
+	SgmlProcessor hypsgm = new SgmlProcessor();
+	SgmlProcessor refsgm = new SgmlProcessor();
+	SgmlProcessor reflensgm = null;
 	Document hypdoc = hypsgm.parse(hyp_fn);
 	Document refdoc = refsgm.parse(ref_fn);
 	Document reflendoc = null;
@@ -142,7 +146,7 @@ public class TERtest {
 	}
 
 	if(reflen_fn != "") {
-	    reflensgm = new TERsgml();
+	    reflensgm = new SgmlProcessor();
 	    reflendoc = reflensgm.parse(reflen_fn);
 
 	    if(reflendoc == null) {
@@ -165,7 +169,7 @@ public class TERtest {
 	if(!verifyFormats(in_ref_format, in_hyp_format, formats)) System.exit(1);
 
 	// set options to compute TER
-	TERcalc calc = new TERcalc();
+	TerScorer calc = new TerScorer();
 	calc.setNormalize(normalized);
 	calc.setCase(caseon);
 	calc.setPunct(nopunct);
@@ -223,7 +227,7 @@ public class TERtest {
 		String refspan = "";
 		if(has_span) refspan = refspans.get(id_nrank);
 
-		TERalignment result = score_all_refs(hyps.get(0), 
+		Alignment result = score_all_refs(hyps.get(0), 
 						     refsegs.get(id_nrank), 
 						     reflenseglist,
 						     refids, 
@@ -281,7 +285,7 @@ public class TERtest {
 					  String ref_fn,
 					  String reflen_fn,
 					  boolean caseon,
-					  TERsgml sgml) {
+					  SgmlProcessor sgml) {
 	BufferedWriter bw = null;
 	if(out_pfx != "" && formats != null && formats.contains(type)) {
 	    try {
@@ -305,7 +309,7 @@ public class TERtest {
     }
 
     public static void closeFile(BufferedWriter bw,
-				 String type, TERsgml sgml) {
+				 String type, SgmlProcessor sgml) {
 
 	if(bw != null) {
 	    try {
@@ -325,10 +329,10 @@ public class TERtest {
     }
 
     public static void writeSummary(BufferedWriter sum,
-				    TERalignment result,
+				    Alignment result,
 				    String id) {
 	try {
-	    result.scoreDetails();
+	    result.populateScoreDetails();
 
 	    sum.write(String.format("%1$-19s | %2$4d | %3$4d | %4$4d | %5$4d | %6$4d | %7$6.1f | %8$8.3f | %9$8.3f\n", 
 				    id, result.numIns, result.numDel, result.numSub, result.numSft, result.numWsf, result.numEdits, result.numWords, result.score()*100.0));
@@ -347,10 +351,10 @@ public class TERtest {
     }
 
     public static void writeNbestSum(BufferedWriter nbt,
-				     TERalignment result,
+				     Alignment result,
 				     String id) {
 	try {
-	    result.scoreDetails();
+	    result.populateScoreDetails();
 
 	    nbt.write(String.format("%1$-19s %2$4d %3$4d %4$4d %5$4d %6$4d %7$6.1f %8$8.3f %9$8.3f\n", 
 				    id, result.numIns, result.numDel, result.numSub, result.numSft, result.numWsf, result.numEdits, result.numWords, result.score()*100.0));
@@ -376,21 +380,21 @@ public class TERtest {
 	    return true;	
     }
 
-    public static TERalignment score_all_refs(String hyp, 
+    public static Alignment score_all_refs(String hyp, 
 					      List<String> refs,
 					      List<String> reflens,
 					      List<String> refids, 
 					      String refspan,
 					      String hypspan,
-					      TERcost costfunc,
-					      TERcalc calc) {
+					      CostFunction costfunc,
+					      TerScorer calc) {
 	double totwords = 0;
 	String ref;
 	String refid = "";
 	String bestref = "";
 	@SuppressWarnings("unused") String reflen = "";
 
-	TERalignment bestresult = null;
+	Alignment bestresult = null;
 	
 	if(has_span && refs.size() > 1) {
 	    System.out.println("Error, translation spans should only be used with SINGLE reference");
@@ -409,7 +413,7 @@ public class TERtest {
 		calc.setHypSpan(hypspan);
 	    }
 
-	    TERalignment result = calc.TER(hyp, ref, costfunc);
+	    Alignment result = calc.TER(hyp, ref, costfunc);
 
 	    if ((bestresult == null) || (bestresult.numEdits > result.numEdits)) {
 		bestresult = result;
