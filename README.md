@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-                     TRANSLATION ERROR RATE (TER) 7.0
+                     TRANSLATION ERROR RATE (TER) 0.8.0
 
         Matthew Snover
         Shuguang Wang
