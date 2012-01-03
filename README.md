@@ -55,14 +55,20 @@ Currently, the following options are supported:
 Examples
 ========
 1. Use default values for all options and output in all formats.
+```bash
    # java -jar tercom.jar -r <ref_file> -h <hyp_file> -n <output_prefix>
+```
 
 2. Enable normalization and case sensitivity, and set the beam width
    to 10.
+```bash
    # java -jar tercom.jar -N -s -b 10 -r <ref_file> -h <hyp_file> -n <output_prefix>
+```
 
 3. Output only summary output.
+```bash
    # java -jar tercom.jar -r <ref_file> -h <hyp_file> -o xml -n <output_prefix>
+```
 
 Sample Data
 ===========
