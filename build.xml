@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project name="tercom" default="jar" basedir=".">
+
+  <property name="version" value="0.8.0" />
+
+  <!-- Compile the Java code -->
+  <target name="compile">
+    <mkdir dir="bin" />
+    <javac compiler="javac1.5" srcdir="src" destdir="bin"
+	   debug="on" encoding="iso-8859-1"
+	   includeantruntime="false" />
+  </target>
+  
+  <!-- Delete the compiled files -->
+  <target name="clean">
+    <delete verbose="true" quiet="true">
+      <fileset dir="bin">
+	<include name="**/*.class" />
+      </fileset>
+    </delete>
+  </target>
+  
+  <!-- Create a JAR file of the compiled classes -->
+  <target name="jar" depends="compile">
+    <jar destfile="tercom-${version}.jar">
+      <fileset dir="bin" includes="**/*.class" />
+      <manifest>
+        <attribute name="Main-Class" value="ter.TERtest" />
+      </manifest>
+    </jar>
+  </target>
+</project>
+

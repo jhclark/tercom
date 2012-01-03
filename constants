@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# These must also be updated in build.xml and README.md
+version=0.8.0
