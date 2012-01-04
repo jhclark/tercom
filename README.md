@@ -33,6 +33,8 @@ USAGE
 =====
 
 Currently, the following options are supported:
+
+```
    -N normalization, optional, default is no.
    -s case sensitivity, optional, default is insensitive
    -P no punctuations, default is with punctuations.
@@ -51,6 +53,7 @@ Currently, the following options are supported:
    -S translation span prefix, optional, this option only works with single reference.
    -a alternative reference path, optional, this file will be only used to compute the reference length.
    -d maximum shift distance, optional, default is 50 words.   
+```
 
 Examples
 ========
