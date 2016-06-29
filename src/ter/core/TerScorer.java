@@ -302,8 +302,7 @@ public class TerScorer {
 		rerr[rpos] = true;
 		ralign[rpos] = hpos;
       } else {
-		System.err.print("Error!  Invalid mini align sequence " + sym + " at pos " + i + "\n");
-		System.exit(-1);
+        throw new IllegalStateException("Error! Invalid mini align sequence " + sym + " at pos " + i + "\n");
       }
 	}
   }
@@ -575,15 +574,11 @@ public class TerScorer {
 	@SuppressWarnings("unused") int hwsize = hyp.length-1;
 	@SuppressWarnings("unused") int rwsize = ref.length-1;
 	
-	NUM_BEAM_SEARCH_CALLS++;
+	final int size = Math.max(ref.length, hyp.length) + 1;
+	final double[][] S = new double[size][size];
+	final char[][] P = new char[size][size];
 
-	if ((ref.length+1 > S.length) || (hyp.length+1 > S.length)) {
-      int max = ref.length;
-      if (hyp.length > ref.length) max = hyp.length;
-      max += 26; // we only need a +1 here, but let's pad for future use
-      S = new double[max][max];
-      P = new char[max][max];
-	}
+	NUM_BEAM_SEARCH_CALLS++;
 
 	for (i=0; i <= ref.length; i++){
       for (j=0; j <= hyp.length; j++){
@@ -685,8 +680,7 @@ public class TerScorer {
       } else if (P[i][j] == 'I') {
 		j--;
       } else {
-		System.out.println("Invalid path: " + P[i][j]);
-		System.exit(-1);
+        throw new IllegalStateException("Invalid path: " + P[i][j]);
       }
 	}
 	char[] path = new char[tracelength];
@@ -745,10 +739,6 @@ public class TerScorer {
   private int NUM_SEGMENTS_SCORED = 0;
   private int NUM_SHIFTS_CONSIDERED = 0;
   private int NUM_BEAM_SEARCH_CALLS = 0;
-
-  /* These are resized by the MIN_EDIT_DIST code if they aren't big enough */
-  private double[][] S = new double[350][350];
-  private char[][] P = new char[350][350];
 
   
 }
