@@ -31,6 +31,7 @@ public class TerScorer {
   private boolean normalized = false;
   private boolean caseon = false;
   private boolean nopunct = false;
+    private boolean asiansupport = false;
   private IntPair[] refSpans = null;
   private IntPair[] hypSpans = null;
   public double ref_len = -1.;
@@ -46,6 +47,10 @@ public class TerScorer {
   public void setPunct(boolean b) {
 	nopunct = b;
   }
+
+    public void setAsian(boolean b) {
+	asiansupport = b;
+    }
 
   public void setBeamWidth(int i) {
 	BEAM_WIDTH = i;
@@ -208,7 +213,7 @@ public class TerScorer {
   }
 
   public String[] tokenize(String s) {
-	  return Normalizer.tokenize(s, normalized, nopunct);
+      return Normalizer.tokenize(s, normalized, nopunct, asiansupport);
   }
     
   private Map<List<String>, Set<Integer>> BuildWordMatches(String[] hyp, 

@@ -39,6 +39,8 @@ public class TER {
 	boolean caseon = (Boolean) val;
 	val = paras.get(Parameters.OPTIONS.NOPUNCTUATION);
 	boolean nopunct = (Boolean) val;
+	val = paras.get(Parameters.OPTIONS.ASIANSUPPORT);
+	boolean asiansupport = (Boolean) val;
 	val = paras.get(Parameters.OPTIONS.OUTPFX);
 	String out_pfx;
 	if(val != null)
@@ -140,6 +142,7 @@ public class TER {
 	calc.setNormalize(normalized);
 	calc.setCase(caseon);
 	calc.setPunct(nopunct);
+	calc.setAsian(asiansupport);
 	calc.setBeamWidth(beam_width);
 	calc.setShiftDist(shift_dist);
 
