@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-                     TRANSLATION ERROR RATE (TER) 0.8.0
+                     TRANSLATION ERROR RATE (TER) 0.9.0
 
         Matthew Snover
         Shuguang Wang
@@ -38,6 +38,7 @@ Currently, the following options are supported:
    -N normalization, optional, default is no.
    -s case sensitivity, optional, default is insensitive
    -P no punctuations, default is with punctuations.
+   -A Asian language support for -N and -P, optional, default is without.
    -r reference file path, required.
    -h hypothesis file path, required.
    -o output formats, optional, default are all formats.
@@ -70,7 +71,13 @@ Examples
    $ java -jar tercom.jar -N -s -b 10 -r <ref_file> -h <hyp_file> -n <output_prefix>
 ```
 
-3. Output only summary output.
+3. Same as above, but split most Chinese and Japanese text appearing in the output down to the character level.
+
+```bash
+   $ java -jar tercom.jar -N -A -s -b 10 -r <ref_file> -h <hyp_file> -n <output_prefix>
+```
+
+4. Output only summary output.
 
 ```bash
    $ java -jar tercom.jar -r <ref_file> -h <hyp_file> -o xml -n <output_prefix>
