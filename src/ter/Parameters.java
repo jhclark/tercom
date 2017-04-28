@@ -14,6 +14,7 @@ public class Parameters {
   private boolean case_on;
   private boolean no_punctuation;
     private boolean asian_support;
+    private boolean no_tag_brackets;
   private List<String> out_formats;
   private String out_pfx;
   private Pattern opts_p;
@@ -28,7 +29,7 @@ public class Parameters {
     private double match_cost;
 
   public static enum OPTIONS {
-      NORMALIZE, CASEON, NOPUNCTUATION, ASIANSUPPORT, REF, HYP, FORMATS, OUTPFX, BEAMWIDTH, REFLEN, TRANSSPAN, SHIFTDIST, DELETE_COST, INSERT_COST, SUBSTITUTE_COST, MATCH_COST, SHIFT_COST;
+      NORMALIZE, CASEON, NOPUNCTUATION, ASIANSUPPORT, NOTAGBRACKETS, REF, HYP, FORMATS, OUTPFX, BEAMWIDTH, REFLEN, TRANSSPAN, SHIFTDIST, DELETE_COST, INSERT_COST, SUBSTITUTE_COST, MATCH_COST, SHIFT_COST;
   }
 
   public Parameters() {
@@ -40,6 +41,7 @@ public class Parameters {
 	case_on = false;
 	no_punctuation = false;
 	asian_support = false;
+	no_tag_brackets = false;
 	opts_p = Pattern.compile("^\\s*-(\\S+)\\s*$");
 	beam_width = 20;
     span_pfx = "";
@@ -73,6 +75,9 @@ public class Parameters {
 	  case 'A':
 		    asian_support = true;
 		    break;
+	  case 'K':
+		    no_tag_brackets = true;
+		    break;		    
           case 'r':
 		    if(i == args.length -1 || args[i+1].charAt(0) == '-')
               usage();
@@ -169,6 +174,7 @@ public class Parameters {
       paras.put(OPTIONS.CASEON, case_on);
       paras.put(OPTIONS.NOPUNCTUATION, no_punctuation);
       paras.put(OPTIONS.ASIANSUPPORT, asian_support);
+      paras.put(OPTIONS.NOTAGBRACKETS, no_tag_brackets);
       paras.put(OPTIONS.OUTPFX, out_pfx);
       paras.put(OPTIONS.REF, reffn);
       paras.put(OPTIONS.HYP, hypfn);
@@ -187,7 +193,7 @@ public class Parameters {
   }
 
   public static void usage() {
-	System.out.println("** Usage: java -jar tercom.jar [-N] [-s] [-P] [-A] -r ref -h hyp [-a alter_ref] [-b beam_width] [-S trans_span_prefix] [-o out_format -n out_pefix] [-d max_shift_distance] [-M match_cost] [-D delete_cost] [-B substitute_cost] [-I insert_cost] [-T shift_cost]");
+	System.out.println("** Usage: java -jar tercom.jar [-N] [-s] [-P] [-A] [-K] -r ref -h hyp [-a alter_ref] [-b beam_width] [-S trans_span_prefix] [-o out_format -n out_pefix] [-d max_shift_distance] [-M match_cost] [-D delete_cost] [-B substitute_cost] [-I insert_cost] [-T shift_cost]");
 	System.exit(1);
   }
 
