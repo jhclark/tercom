@@ -25,7 +25,7 @@
     <jar destfile="tercom-${version}.jar">
       <fileset dir="bin" includes="**/*.class" />
       <manifest>
-        <attribute name="Main-Class" value="ter.TERtest" />
+        <attribute name="Main-Class" value="ter.TER" />
       </manifest>
     </jar>
   </target>
